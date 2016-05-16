@@ -95,6 +95,22 @@
         <span class="votes" ng-click="decrementVotes(comment)">&#9660;</span>
         <hr/>
       </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <form ng-submit="addComment()">
+            <h3>Add a new comment</h3>
+
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Your Name" ng-model="author">
+              <br/>
+              <textarea rows="8" cols="40" class="form-control" placeholder="Add comment here" ng-model="body"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Post</button>
+          </form>
+        </div>
+      </div>
+
     </script>
   </body>
 </html>
