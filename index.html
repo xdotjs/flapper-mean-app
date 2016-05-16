@@ -23,6 +23,7 @@
     <div class="container-fluid">
       <ui-view></ui-view>
     </div>
+    <!-- Home Page Template -->
     <script type="text/ng-template" id="/home.html">
       <div class="row">
         <div class="col-md-6 col-md-offset-1">
@@ -40,7 +41,8 @@
             <span class="votes">{{post.votes}}</span> &nbsp; &nbsp; &nbsp;
             <!-- Show linked version of title only if link was submitted -->
             <a class="title" ng-show="post.link" href="{{post.link}}">{{post.title}}</a>
-            <span class="title" ng-hide="post.link">{{post.title}}</span>
+            <span class="title" ng-hide="post.link">{{post.title}}</span> &nbsp; &nbsp;
+            <span><a href="#/posts/{{$index}}">comments</a></span>
             <br/>
             <!-- Clickable element the decreases votes -1 -->
             <span class="votes" ng-click="decrementVotes(post)">&#9660;</span>
@@ -64,6 +66,34 @@
           <br/>
         </div>
 
+      </div>
+    </script>
+    <!-- Posts w/ Comments Page Template -->
+    <script type="text/ng-template" id="/posts.html">
+      <div class="page-header">
+        <h3>
+          <a ng-show="post.link" href="{{post.link}}">
+            {{post.title}}
+          </a>
+          <span ng-hide="post.link">
+            {{post.title}}
+          </span>
+        </h3>
+      </div>
+
+      <!-- Interate through $scopes.posts array
+      Then order by upvotes in descending order -->
+      <div ng-repeat="comment in posts.comments | orderBy: '-upvotes'">
+        <!-- Clickable element that increases votes +1 -->
+        <span class="votes"ng-click="incrementVotes(comment)">&#9650;</span>
+        <br/>
+        <span class="votes">{{comment.votes}}</span> &nbsp; &nbsp; &nbsp;
+        <!-- Show linked version of title only if link was submitted -->
+        <span class="comment">{{comment.body}}</span>
+        <br/>
+        <!-- Clickable element the decreases votes -1 -->
+        <span class="votes" ng-click="decrementVotes(comment)">&#9660;</span>
+        <hr/>
       </div>
     </script>
   </body>

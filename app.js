@@ -45,6 +45,7 @@ app.controller('MainCtrl', [
 
     $scope.addPost = function() {
       if(!$scope.title || $scope.title === '') { return; }
+
       $scope.posts.push({
         title: $scope.title,
         link: $scope.link,
@@ -54,14 +55,17 @@ app.controller('MainCtrl', [
           {author: 'Bob', body: 'Great idea but that is wrong!', votes: 0}
         ]
       });
+
       $scope.title = '';
       $scope.link = '';
     };
 
+    // Increments votes score by +1
     $scope.incrementVotes = function(post) {
       post.votes += 1;
     };
 
+    // Decrements votes score by -1
     $scope.decrementVotes = function(post) {
       post.votes -= 1;
     };
@@ -73,5 +77,9 @@ app.controller('PostsCtrl', [
   '$stateParams',
   'posts',
   function($scope, $stateParams, posts){
+
+    // Get posts from the Posts Service
+    // using the id from $stateParams
+    $scope.post = posts.posts[$stateParams.id];
 
 }]);
