@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Flapper News</title>
+    <!-- Bootstrap -->
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  	<!-- Bootstrap Optional theme -->
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  	<!-- Main CSS -->
+  	<link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <!-- Angular -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+    <script src="/javascripts/angularApp.js"></script>
+    <style>
+      .glyphicon-thumbs-up { cursor:pointer }
+    </style>
+  </head>
+  <body ng-app="flapperNews">
+    <div class="container-fluid">
+      <ui-view></ui-view>
+    </div>
+    <!-- Home Page Template -->
+    <script type="text/ng-template" id="/home.html">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-1">
+
+          <div class="page-header">
+            <h1>Flapper News</h1>
+          </div>
+
+          <!-- Interate through $scopes.posts array
+          Then order by upvotes in descending order -->
+          <div ng-repeat="post in posts | orderBy: '-upvotes'">
+            <!-- Clickable element that increases votes +1 -->
+            <span class="votes"ng-click="incrementVotes(post)">&#9650;</span>
+            <br/>
+            <span class="votes">{{post.votes}}</span> &nbsp; &nbsp; &nbsp;
+            <!-- Show linked version of title only if link was submitted -->
+            <a class="title" ng-show="post.link" href="{{post.link}}">{{post.title}}</a>
+            <span class="title" ng-hide="post.link">{{post.title}}</span> &nbsp; &nbsp;
+            <span><a href="#/posts/{{$index}}">comments</a></span>
+            <br/>
+            <!-- Clickable element the decreases votes -1 -->
+            <span class="votes" ng-click="decrementVotes(post)">&#9660;</span>
+            <hr/>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="col-md-4">
+          <form ng-submit="addPost()">
+            <h3>Add a new post</h3>
+
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Title" ng-model="title">
+              <br/>
+              <input type="text" class="form-control" placeholder="Paste link here" ng-model="link">
+            </div>
+            <button type="submit" class="btn btn-primary">Post</button>
+          </form>
+          <br/>
+        </div>
+
+      </div>
+    </script>
+    <!-- Posts w/ Comments Page Template -->
+    <script type="text/ng-template" id="/posts.html">
+      <div class="page-header">
+        <h3>
+          <a ng-show="post.link" href="{{post.link}}">
+            {{post.title}}
+          </a>
+          <span ng-hide="post.link">
+            {{post.title}}
+          </span>
+        </h3>
+      </div>
+
+      <!-- Interate through $scopes.posts array
+      Then order by upvotes in descending order -->
+      <div ng-repeat="comment in posts.comments | orderBy: '-upvotes'">
+        <!-- Clickable element that increases votes +1 -->
+        <span class="votes"ng-click="incrementVotes(comment)">&#9650;</span>
+        <br/>
+        <span class="votes">{{comment.votes}}</span> &nbsp; &nbsp; &nbsp;
+        <!-- Show linked version of title only if link was submitted -->
+        <span class="comment">{{comment.body}}</span>
+        <br/>
+        <!-- Clickable element the decreases votes -1 -->
+        <span class="votes" ng-click="decrementVotes(comment)">&#9660;</span>
+        <hr/>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <form ng-submit="addComment()">
+            <h3>Add a new comment</h3>
+
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Your Name" ng-model="author">
+              <br/>
+              <textarea rows="8" cols="40" class="form-control" placeholder="Add comment here" ng-model="body"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Post</button>
+          </form>
+        </div>
+      </div>
+
+    </script>
+  </body>
+</html>
